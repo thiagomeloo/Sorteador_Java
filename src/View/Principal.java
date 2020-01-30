@@ -2,16 +2,17 @@ package View;
 
 import Controler.Sort;
 import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import static javafx.application.Platform.exit;
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
 import javax.swing.JSpinner.DefaultEditor;
-import javax.swing.JSpinner.NumberEditor;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 
@@ -93,41 +94,32 @@ public class Principal extends javax.swing.JFrame {
         btnRemoveSorteados = new javax.swing.JLabel();
 
         btnAdd0.setFont(btnAdd0.getFont().deriveFont(btnAdd0.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnAdd0.setForeground(java.awt.Color.black);
         btnAdd0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/add.png"))); // NOI18N
 
         btnAdd1.setFont(btnAdd1.getFont().deriveFont(btnAdd1.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnAdd1.setForeground(java.awt.Color.black);
         btnAdd1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/add1.png"))); // NOI18N
 
         btnRemove0.setFont(btnRemove0.getFont().deriveFont(btnRemove0.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnRemove0.setForeground(java.awt.Color.black);
         btnRemove0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/remove.png"))); // NOI18N
 
         btnRemove1.setFont(btnRemove1.getFont().deriveFont(btnRemove1.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnRemove1.setForeground(java.awt.Color.black);
         btnRemove1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/remove1.png"))); // NOI18N
 
         btnLimpa0.setFont(btnLimpa0.getFont().deriveFont(btnLimpa0.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnLimpa0.setForeground(java.awt.Color.black);
         btnLimpa0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/lixo.png"))); // NOI18N
 
         btnLimpa1.setFont(btnLimpa1.getFont().deriveFont(btnLimpa1.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnLimpa1.setForeground(java.awt.Color.black);
         btnLimpa1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/lixo1.png"))); // NOI18N
 
         btnExit0.setFont(btnExit0.getFont().deriveFont(btnExit0.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnExit0.setForeground(java.awt.Color.black);
         btnExit0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/exit.png"))); // NOI18N
         btnExit0.setMaximumSize(new java.awt.Dimension(40, 40));
 
         btnExit1.setFont(btnExit1.getFont().deriveFont(btnExit1.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnExit1.setForeground(java.awt.Color.black);
         btnExit1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/exit1.png"))); // NOI18N
         btnExit1.setMaximumSize(new java.awt.Dimension(40, 40));
 
         btnSortear0.setFont(btnSortear0.getFont().deriveFont(btnSortear0.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnSortear0.setForeground(java.awt.Color.black);
         btnSortear0.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnSortear0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/embaralhar.png"))); // NOI18N
         btnSortear0.setText("SORTEAR");
@@ -140,7 +132,6 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnSortear1.setFont(btnSortear1.getFont().deriveFont(btnSortear1.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnSortear1.setForeground(java.awt.Color.black);
         btnSortear1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnSortear1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/embaralhar1.png"))); // NOI18N
         btnSortear1.setText("SORTEAR");
@@ -168,7 +159,6 @@ public class Principal extends javax.swing.JFrame {
         title.setText("SORTEADOR");
 
         btnExit.setFont(btnExit.getFont().deriveFont(btnExit.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnExit.setForeground(java.awt.Color.black);
         btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/exit.png"))); // NOI18N
         btnExit.setToolTipText("Sair");
         btnExit.setMaximumSize(new java.awt.Dimension(40, 40));
@@ -221,12 +211,16 @@ public class Principal extends javax.swing.JFrame {
         listaSorteados.setFocusable(false);
         listaSorteados.setSelectionBackground(new java.awt.Color(204, 204, 204));
         listaSorteados.setVerifyInputWhenFocusTarget(false);
+        listaSorteados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listaSorteadosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listaSorteados);
 
         body.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 220, 100));
 
         lblListaSorteados.setFont(lblListaSorteados.getFont().deriveFont(lblListaSorteados.getFont().getStyle() | java.awt.Font.BOLD, 15));
-        lblListaSorteados.setForeground(java.awt.Color.black);
         lblListaSorteados.setText("LISTA DE ITENS SORTEADOS:");
         body.add(lblListaSorteados, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 220, 20));
 
@@ -247,7 +241,6 @@ public class Principal extends javax.swing.JFrame {
         panelqtdLista.setBorder(javax.swing.BorderFactory.createEtchedBorder(java.awt.Color.black, java.awt.Color.lightGray));
 
         lblItensList.setFont(lblItensList.getFont().deriveFont(lblItensList.getFont().getStyle() | java.awt.Font.BOLD, 15));
-        lblItensList.setForeground(java.awt.Color.black);
         lblItensList.setText("ITENS DA LISTA");
 
         qtdSorteio.setFont(qtdSorteio.getFont().deriveFont(qtdSorteio.getFont().getStyle() | java.awt.Font.BOLD, 14));
@@ -289,12 +282,10 @@ public class Principal extends javax.swing.JFrame {
         body.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 50, 344, 250));
 
         lblListaAserSorteada.setFont(lblListaAserSorteada.getFont().deriveFont(lblListaAserSorteada.getFont().getStyle() | java.awt.Font.BOLD, 15));
-        lblListaAserSorteada.setForeground(java.awt.Color.black);
         lblListaAserSorteada.setText("LISTA A SER SORTEADA:");
         body.add(lblListaAserSorteada, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 10, 340, 40));
 
         btnAdd.setFont(btnAdd.getFont().deriveFont(btnAdd.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnAdd.setForeground(java.awt.Color.black);
         btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/add.png"))); // NOI18N
         btnAdd.setToolTipText("Adicionar item");
         btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -312,7 +303,6 @@ public class Principal extends javax.swing.JFrame {
 
         btnSortear.setBackground(new java.awt.Color(255, 255, 255));
         btnSortear.setFont(btnSortear.getFont().deriveFont(btnSortear.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnSortear.setForeground(java.awt.Color.black);
         btnSortear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnSortear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/embaralhar.png"))); // NOI18N
         btnSortear.setText("SORTEAR");
@@ -341,7 +331,6 @@ public class Principal extends javax.swing.JFrame {
         body.add(verificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 180, -1));
 
         btnLimpa.setFont(btnLimpa.getFont().deriveFont(btnLimpa.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnLimpa.setForeground(java.awt.Color.black);
         btnLimpa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/lixo.png"))); // NOI18N
         btnLimpa.setToolTipText("Limpar lista de itens");
         btnLimpa.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -358,24 +347,22 @@ public class Principal extends javax.swing.JFrame {
         body.add(btnLimpa, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 130, 30, 30));
 
         btnRemove.setFont(btnRemove.getFont().deriveFont(btnRemove.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnRemove.setForeground(java.awt.Color.black);
         btnRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/remove.png"))); // NOI18N
         btnRemove.setToolTipText("Remover item selecionado");
         btnRemove.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnRemoveMouseClicked(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnRemoveMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnRemoveMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnRemoveMouseExited(evt);
             }
         });
         body.add(btnRemove, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 90, 30, 30));
 
         btnLimpaSorteados.setFont(btnLimpaSorteados.getFont().deriveFont(btnLimpaSorteados.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnLimpaSorteados.setForeground(java.awt.Color.black);
         btnLimpaSorteados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/lixo.png"))); // NOI18N
         btnLimpaSorteados.setToolTipText("Limpar lista de sorteados");
         btnLimpaSorteados.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -392,7 +379,6 @@ public class Principal extends javax.swing.JFrame {
         body.add(btnLimpaSorteados, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, 30, 30));
 
         btnRemoveSorteados.setFont(btnRemoveSorteados.getFont().deriveFont(btnRemoveSorteados.getFont().getStyle() | java.awt.Font.BOLD, 14));
-        btnRemoveSorteados.setForeground(java.awt.Color.black);
         btnRemoveSorteados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/remove.png"))); // NOI18N
         btnRemoveSorteados.setToolTipText("Remover item selecionado da lista sorteada");
         btnRemoveSorteados.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -604,6 +590,21 @@ public class Principal extends javax.swing.JFrame {
         listaItem.clearSelection();
         listaSorteados.clearSelection();
     }//GEN-LAST:event_bodyMouseClicked
+
+    private void listaSorteadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listaSorteadosMouseClicked
+        try {
+            DefaultListModel model = (DefaultListModel) listaSorteados.getModel();
+            
+            //Jogando o texto selecionado na lista sorteada para o ctrl V
+            Clipboard board = Toolkit.getDefaultToolkit().getSystemClipboard();
+            ClipboardOwner selection = new StringSelection(listaSorteados.getSelectedValue());
+            board.setContents((Transferable) selection, selection);
+
+            
+            
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_listaSorteadosMouseClicked
 
     /**
      * @param args the command line arguments
